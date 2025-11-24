@@ -1,0 +1,135 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Gradient definitions for fiery effect -->
+  <defs>
+    <linearGradient id="fireGradient1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ff8c00;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff4500;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="fireGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff6347;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ff8c00;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffa500;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="bodyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#ffe4b5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff8c00;stop-opacity:1" />
+    </linearGradient>
+    
+    <radialGradient id="glowGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.8" />
+      <stop offset="50%" style="stop-color:#ff8c00;stop-opacity:0.4" />
+      <stop offset="100%" style="stop-color:#ff4500;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Glow effect -->
+  <circle cx="100" cy="100" r="90" fill="url(#glowGradient)" opacity="0.6"/>
+  
+  <!-- Left wing flame -->
+  <path d="M 85 110 Q 50 90, 30 70 Q 25 65, 28 60 Q 35 55, 45 65 Q 55 75, 65 85 Q 70 95, 75 105 Z" 
+        fill="url(#fireGradient1)" opacity="0.9">
+    <animate attributeName="d" 
+             values="M 85 110 Q 50 90, 30 70 Q 25 65, 28 60 Q 35 55, 45 65 Q 55 75, 65 85 Q 70 95, 75 105 Z;
+                     M 85 110 Q 48 88, 28 68 Q 23 63, 26 58 Q 33 53, 43 63 Q 53 73, 63 83 Q 68 93, 75 105 Z;
+                     M 85 110 Q 50 90, 30 70 Q 25 65, 28 60 Q 35 55, 45 65 Q 55 75, 65 85 Q 70 95, 75 105 Z"
+             dur="2s" repeatCount="indefinite"/>
+  </path>
+  
+  <!-- Right wing flame -->
+  <path d="M 115 110 Q 150 90, 170 70 Q 175 65, 172 60 Q 165 55, 155 65 Q 145 75, 135 85 Q 130 95, 125 105 Z" 
+        fill="url(#fireGradient1)" opacity="0.9">
+    <animate attributeName="d" 
+             values="M 115 110 Q 150 90, 170 70 Q 175 65, 172 60 Q 165 55, 155 65 Q 145 75, 135 85 Q 130 95, 125 105 Z;
+                     M 115 110 Q 152 88, 172 68 Q 177 63, 174 58 Q 167 53, 157 63 Q 147 73, 137 83 Q 132 93, 125 105 Z;
+                     M 115 110 Q 150 90, 170 70 Q 175 65, 172 60 Q 165 55, 155 65 Q 145 75, 135 85 Q 130 95, 125 105 Z"
+             dur="2s" repeatCount="indefinite"/>
+  </path>
+  
+  <!-- Left wing secondary -->
+  <path d="M 80 105 Q 55 95, 40 85 Q 35 82, 37 78 Q 42 75, 50 82 Q 60 90, 70 98 Z" 
+        fill="url(#fireGradient2)" opacity="0.85">
+    <animate attributeName="opacity" 
+             values="0.85;0.7;0.85" 
+             dur="1.5s" repeatCount="indefinite"/>
+  </path>
+  
+  <!-- Right wing secondary -->
+  <path d="M 120 105 Q 145 95, 160 85 Q 165 82, 163 78 Q 158 75, 150 82 Q 140 90, 130 98 Z" 
+        fill="url(#fireGradient2)" opacity="0.85">
+    <animate attributeName="opacity" 
+             values="0.85;0.7;0.85" 
+             dur="1.5s" repeatCount="indefinite"/>
+  </path>
+  
+  <!-- Phoenix body -->
+  <ellipse cx="100" cy="105" rx="15" ry="25" fill="url(#bodyGradient)"/>
+  
+  <!-- Phoenix head -->
+  <circle cx="100" cy="75" r="12" fill="url(#bodyGradient)"/>
+  
+  <!-- Crest flames -->
+  <path d="M 95 68 Q 93 60, 95 55 Q 97 50, 99 55 Q 100 60, 98 68 Z" 
+        fill="url(#fireGradient1)">
+    <animate attributeName="d" 
+             values="M 95 68 Q 93 60, 95 55 Q 97 50, 99 55 Q 100 60, 98 68 Z;
+                     M 95 68 Q 93 58, 95 53 Q 97 48, 99 53 Q 100 58, 98 68 Z;
+                     M 95 68 Q 93 60, 95 55 Q 97 50, 99 55 Q 100 60, 98 68 Z"
+             dur="1s" repeatCount="indefinite"/>
+  </path>
+  
+  <path d="M 100 66 Q 98 56, 100 50 Q 102 44, 104 50 Q 105 56, 103 66 Z" 
+        fill="#ffffff">
+    <animate attributeName="d" 
+             values="M 100 66 Q 98 56, 100 50 Q 102 44, 104 50 Q 105 56, 103 66 Z;
+                     M 100 66 Q 98 54, 100 48 Q 102 42, 104 48 Q 105 54, 103 66 Z;
+                     M 100 66 Q 98 56, 100 50 Q 102 44, 104 50 Q 105 56, 103 66 Z"
+             dur="1s" repeatCount="indefinite"/>
+  </path>
+  
+  <path d="M 105 68 Q 107 60, 105 55 Q 103 50, 101 55 Q 100 60, 102 68 Z" 
+        fill="url(#fireGradient2)">
+    <animate attributeName="d" 
+             values="M 105 68 Q 107 60, 105 55 Q 103 50, 101 55 Q 100 60, 102 68 Z;
+                     M 105 68 Q 107 58, 105 53 Q 103 48, 101 53 Q 100 58, 102 68 Z;
+                     M 105 68 Q 107 60, 105 55 Q 103 50, 101 55 Q 100 60, 102 68 Z"
+             dur="1s" repeatCount="indefinite"/>
+  </path>
+  
+  <!-- Eye -->
+  <circle cx="103" cy="75" r="2" fill="#ff4500"/>
+  
+  <!-- Beak -->
+  <path d="M 108 77 L 113 78 L 108 79 Z" fill="#ff6347"/>
+  
+  <!-- Tail flames -->
+  <path d="M 100 130 Q 95 145, 90 160 Q 88 165, 90 168 Q 93 165, 95 155 Q 98 145, 100 135 Z" 
+        fill="url(#fireGradient1)" opacity="0.9">
+    <animate attributeName="d" 
+             values="M 100 130 Q 95 145, 90 160 Q 88 165, 90 168 Q 93 165, 95 155 Q 98 145, 100 135 Z;
+                     M 100 130 Q 94 147, 88 163 Q 86 168, 88 171 Q 91 168, 93 158 Q 96 147, 100 135 Z;
+                     M 100 130 Q 95 145, 90 160 Q 88 165, 90 168 Q 93 165, 95 155 Q 98 145, 100 135 Z"
+             dur="1.8s" repeatCount="indefinite"/>
+  </path>
+  
+  <path d="M 100 130 Q 100 148, 100 165 Q 100 172, 102 172 Q 103 168, 102 158 Q 101 145, 100 135 Z" 
+        fill="#ffffff" opacity="0.95">
+    <animate attributeName="d" 
+             values="M 100 130 Q 100 148, 100 165 Q 100 172, 102 172 Q 103 168, 102 158 Q 101 145, 100 135 Z;
+                     M 100 130 Q 100 150, 100 168 Q 100 175, 102 175 Q 103 171, 102 161 Q 101 147, 100 135 Z;
+                     M 100 130 Q 100 148, 100 165 Q 100 172, 102 172 Q 103 168, 102 158 Q 101 145, 100 135 Z"
+             dur="1.8s" repeatCount="indefinite"/>
+  </path>
+  
+  <path d="M 100 130 Q 105 145, 110 160 Q 112 165, 110 168 Q 107 165, 105 155 Q 102 145, 100 135 Z" 
+        fill="url(#fireGradient2)" opacity="0.9">
+    <animate attributeName="d" 
+             values="M 100 130 Q 105 145, 110 160 Q 112 165, 110 168 Q 107 165, 105 155 Q 102 145, 100 135 Z;
+                     M 100 130 Q 106 147, 112 163 Q 114 168, 112 171 Q 109 168, 107 158 Q 104 147, 100 135 Z;
+                     M 100 130 Q 105 145, 110 160 Q 112 165, 110 168 Q 107 165, 105 155 Q 102 145, 100 135 Z"
+             dur="1.8s" repeatCount="indefinite"/>
+  </path>
+</svg>

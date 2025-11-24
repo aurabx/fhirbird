@@ -1,36 +1,122 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🐦 FHIR Bird
+
+A Next.js-powered browser for FHIR (Fast Healthcare Interoperability Resources) servers. Query and explore healthcare data with an intuitive interface.
+
+## Features
+
+- 🔧 **Server Configuration**: Easily set and save your FHIR server URL
+- 🔍 **Flexible Querying**: Support for both search queries and direct resource reads
+- 📊 **Interactive Results**: Expandable JSON viewer with syntax highlighting
+- 🎯 **Common Resources**: Quick access to frequently-used FHIR resource types
+- 💾 **Persistent Settings**: Server URL saved in local storage
+- ⚡ **Real-time Feedback**: Loading states and error handling
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+ and npm
+
+### Installation
+
+```bash
+npm install
+```
+
+### Development
+
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Production Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## Usage
 
-To learn more about Next.js, take a look at the following resources:
+### 1. Configure Your FHIR Server
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Click the "Configure" button and enter your FHIR server base URL. For testing, you can use the public HAPI FHIR server:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+https://hapi.fhir.org/baseR4
+```
 
-## Deploy on Vercel
+### 2. Query Resources
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Choose from two query modes:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+#### Search Mode
+- Select a resource type (Patient, Observation, etc.)
+- Optionally add search parameters like `_count=10` or `name=Smith`
+- Click "Execute Query"
+
+#### Read by ID Mode
+- Select a resource type
+- Enter a specific resource ID
+- Click "Execute Query"
+
+### 3. View Results
+
+- Results are displayed in an interactive, expandable tree view
+- Click the arrows (▶/▼) to expand/collapse sections
+- Use "View Raw JSON" to see the complete response
+
+## Supported Resource Types
+
+- Patient
+- Observation
+- Condition
+- Procedure
+- MedicationRequest
+- Encounter
+- Practitioner
+- Organization
+- AllergyIntolerance
+- DiagnosticReport
+- Immunization
+- CarePlan
+
+## Technology Stack
+
+- **Framework**: Next.js 16 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Linting**: Biome
+
+## Project Structure
+
+```
+fhirbird/
+├── app/
+│   └── page.tsx          # Main application page
+├── components/
+│   ├── ServerConfig.tsx   # FHIR server configuration
+│   ├── QueryInterface.tsx # Query builder form
+│   └── ResultsDisplay.tsx # Results viewer
+└── README.md
+```
+
+## CORS Considerations
+
+If you encounter CORS errors when querying a FHIR server:
+
+1. Ensure the server supports CORS
+2. Use a CORS proxy for development (not recommended for production)
+3. Consider running the server with appropriate CORS headers
+
+## License
+
+MIT
+
+## Contributing
+
+Contributions welcome! Please feel free to submit a Pull Request.
