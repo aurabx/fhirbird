@@ -68,10 +68,22 @@ NODE_ENV=production
 ALLOWED_FHIR_DOMAINS=hapi.fhir.org,*.hl7.org,*.fhir.org,server.fire.ly
 ```
 
+### Production Server List
+
+In production mode (`NODE_ENV=production`), users select from a predefined list of FHIR servers instead of entering URLs manually. This improves security and user experience.
+
+**Default servers:**
+- HAPI FHIR R4 (Public)
+- HAPI FHIR R5 (Public)  
+- Vonk FHIR Server (Demo)
+
+**To customize:** Edit the `PRODUCTION_FHIR_SERVERS` array in `components/ServerConfig.tsx`
+
 ### Deployment Checklist
 
 - [ ] Set `NODE_ENV=production`
-- [ ] Configure `ALLOWED_FHIR_DOMAINS` to limit proxy usage
+- [ ] Customize `PRODUCTION_FHIR_SERVERS` list if needed
+- [ ] Configure `ALLOWED_FHIR_DOMAINS` to match your server list
 - [ ] Enable HTTPS/SSL
 - [ ] Set up monitoring and logging
 - [ ] Configure CDN/WAF (Cloudflare, AWS WAF, etc.)

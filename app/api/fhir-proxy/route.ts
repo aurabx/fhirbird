@@ -65,9 +65,10 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Only HTTP/HTTPS protocols allowed' }, { status: 400 });
   }
 
+  const hostname = parsedUrl.hostname;
+
   // Block private/local IP ranges in production (prevents SSRF attacks)
   if (process.env.NODE_ENV === 'production') {
-    const hostname = parsedUrl.hostname;
     if (
       hostname === 'localhost' ||
       hostname.startsWith('127.') ||

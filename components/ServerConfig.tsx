@@ -7,6 +7,15 @@ interface ServerConfigProps {
   onProxyChange: (useProxy: boolean) => void;
 }
 
+// Predefined FHIR servers for production
+const PRODUCTION_FHIR_SERVERS = [
+  { name: 'HAPI FHIR R4 (Public)', url: 'https://hapi.fhir.org/baseR4' },
+  { name: 'HAPI FHIR R5 (Public)', url: 'https://hapi.fhir.org/baseR5' },
+  { name: 'Vonk FHIR Server (Demo)', url: 'https://vonk.fire.ly' },
+];
+
+const isProduction = process.env.NODE_ENV === 'production';
+
 export default function ServerConfig({ onServerChange, onProxyChange }: ServerConfigProps) {
   const [serverUrl, setServerUrl] = useState('');
   const [isEditing, setIsEditing] = useState(false);
@@ -49,19 +58,42 @@ export default function ServerConfig({ onServerChange, onProxyChange }: ServerCo
         <div className="space-y-4">
           <div>
             <label htmlFor="serverUrl" className="block text-sm font-medium text-orange-700 mb-2">
-              FHIR Server URL
+              FHIR Server {isProduction ? '' : 'URL'}
             </label>
-            <input
-              id="serverUrl"
-              type="url"
-              value={serverUrl}
-              onChange={(e) => setServerUrl(e.target.value)}
-              placeholder="https://hapi.fhir.org/baseR4"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent text-orange-700"
-            />
-            <p className="mt-1 text-sm text-gray-500">
-              Enter the base URL of your FHIR server (e.g., https://hapi.fhir.org/baseR4)
-            </p>
+            {isProduction ? (
+              <>
+                <select
+                  id="serverUrl"
+                  value={serverUrl}
+                  onChange={(e) => setServerUrl(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent text-orange-700"
+                >
+                  <option value="">Select a FHIR server...</option>
+                  {PRODUCTION_FHIR_SERVERS.map((server) => (
+                    <option key={server.url} value={server.url}>
+                      {server.name}
+                    </option>
+                  ))}
+                </select>
+                <p className="mt-1 text-sm text-gray-500">
+                  Public FHIR test servers. You can customize this list in your own deployment.
+                </p>
+              </>
+            ) : (
+              <>
+                <input
+                  id="serverUrl"
+                  type="url"
+                  value={serverUrl}
+                  onChange={(e) => setServerUrl(e.target.value)}
+                  placeholder="https://hapi.fhir.org/baseR4"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent text-orange-700"
+                />
+                <p className="mt-1 text-sm text-gray-500">
+                  Enter the base URL of your FHIR server (e.g., https://hapi.fhir.org/baseR4)
+                </p>
+              </>
+            )}
           </div>
           
           <div className="flex gap-2">
