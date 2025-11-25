@@ -73,9 +73,9 @@ ALLOWED_FHIR_DOMAINS=hapi.fhir.org,*.hl7.org,*.fhir.org,server.fire.ly
 In production mode (`NODE_ENV=production`), users select from a predefined list of FHIR servers instead of entering URLs manually. This improves security and user experience.
 
 **Default servers:**
-- HAPI FHIR R4 (Public)
-- HAPI FHIR R5 (Public)  
-- Vonk FHIR Server (Demo)
+- HAPI FHIR R4 (Public Test Server)
+- HAPI FHIR R5 (Public Test Server)
+- https://server.fire.ly
 
 **To customize:** Edit the `PRODUCTION_FHIR_SERVERS` array in `components/ServerConfig.tsx`
 

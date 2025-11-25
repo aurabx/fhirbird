@@ -9,9 +9,9 @@ interface ServerConfigProps {
 
 // Predefined FHIR servers for production
 const PRODUCTION_FHIR_SERVERS = [
-  { name: 'HAPI FHIR R4 (Public)', url: 'https://hapi.fhir.org/baseR4' },
-  { name: 'HAPI FHIR R5 (Public)', url: 'https://hapi.fhir.org/baseR5' },
-  { name: 'Vonk FHIR Server (Demo)', url: 'https://vonk.fire.ly' },
+  { name: 'HAPI FHIR R4 (Public Test Server)', url: 'https://hapi.fhir.org/baseR4' },
+  { name: 'HAPI FHIR R5 (Public Test Server)', url: 'https://hapi.fhir.org/baseR5' },
+  { name: 'Firely Server (Public)', url: 'https://server.fire.ly' },
 ];
 
 const isProduction = process.env.NODE_ENV === 'production';
