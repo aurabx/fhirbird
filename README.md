@@ -47,6 +47,37 @@ npm run build
 npm start
 ```
 
+## Production Deployment
+
+FHIRbird is deployed at **https://fhirbird.runbeam.io**
+
+### Environment Variables
+
+Copy `.env.example` to `.env.local` and configure:
+
+```bash
+cp .env.example .env.local
+```
+
+**Recommended settings for production:**
+
+```env
+NODE_ENV=production
+
+# Restrict proxy to trusted FHIR servers
+ALLOWED_FHIR_DOMAINS=hapi.fhir.org,*.hl7.org,*.fhir.org,server.fire.ly
+```
+
+### Deployment Checklist
+
+- [ ] Set `NODE_ENV=production`
+- [ ] Configure `ALLOWED_FHIR_DOMAINS` to limit proxy usage
+- [ ] Enable HTTPS/SSL
+- [ ] Set up monitoring and logging
+- [ ] Configure CDN/WAF (Cloudflare, AWS WAF, etc.)
+- [ ] Review rate limits (currently 60 req/min per IP)
+- [ ] Set up error tracking (Sentry, etc.)
+
 ## Usage
 
 ### 1. Configure Your FHIR Server
@@ -141,6 +172,35 @@ FHIRbird includes a built-in proxy to handle CORS issues:
 - **When to disable**: Only if your FHIR server has CORS properly configured
 
 The proxy preserves all custom headers including authentication tokens.
+
+## Security
+
+FHIRbird includes several security measures to prevent abuse:
+
+### Rate Limiting
+- **60 requests per minute** per IP address
+- Prevents DoS attacks and excessive API usage
+- Returns 429 status when limit exceeded
+
+### URL Validation
+- Only HTTP/HTTPS protocols allowed
+- Private IP ranges (127.x, 10.x, 192.168.x, 172.16-31.x) blocked only when `NODE_ENV=production`
+- Localhost and private IPs **are allowed** in development mode for local testing
+
+### Resource Limits
+- **30 second timeout** on proxy requests
+- **10MB response size limit** to prevent memory exhaustion
+- Automatic cleanup of aborted requests
+
+### Production Recommendations
+
+For production deployments, consider:
+
+1. **Authentication**: Add API keys or OAuth to the proxy endpoint
+2. **Distributed Rate Limiting**: Use Redis instead of in-memory storage
+3. **Allowlist**: Restrict proxy to specific FHIR server domains
+4. **Monitoring**: Log and alert on suspicious patterns
+5. **CDN/WAF**: Use Cloudflare or AWS WAF for additional protection
 
 ## License
 

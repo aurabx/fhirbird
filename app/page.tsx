@@ -44,10 +44,10 @@ export default function Home() {
       <div className="container mx-auto px-4 py-4">
         <header className="mb-4 flex items-start justify-between">
           <div>
-            <Image 
-              src="/logo-horizonal.png" 
-              alt="FHIRbird Logo" 
-              width={828} 
+            <Image
+              src="/logo-horizonal.png"
+              alt="FHIRbird Logo"
+              width={828}
               height={224}
               className="drop-shadow-lg w-auto h-auto mb-1"
               style={{ maxWidth: '250px' }}
@@ -57,26 +57,29 @@ export default function Home() {
             </p>
           </div>
           <div className="flex gap-4 text-sm">
-            <a 
-              href="https://runbeam.io" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-orange-600 hover:text-orange-700 transition-colors"
+              <span className={"text-orange-500 mr-2"}>
+                  Built by&nbsp;
+            <a
+                href="https://runbeam.io"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-orange-600 hover:text-orange-700 transition-colors"
             >
               Runbeam.io
             </a>
-            <a 
-              href="https://github.com/aurabx/fhirbird" 
-              target="_blank" 
+              </span>
+            <a
+              href="https://github.com/aurabx/fhirbird"
+              target="_blank"
               rel="noopener noreferrer"
-              className="text-orange-600 hover:text-orange-700 transition-colors"
+              className="text-orange-600 hover:text-orange-700 transition-colors underline"
             >
               GitHub
             </a>
           </div>
         </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 underline">
           <div>
             <ServerConfig onServerChange={handleServerChange} onProxyChange={handleProxyChange} />
             <QueryInterface
