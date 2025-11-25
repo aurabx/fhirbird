@@ -6,6 +6,8 @@ A Next.js-powered browser for FHIR (Fast Healthcare Interoperability Resources) 
 
 FHIRbird is creaated by [Runbeam](https://runbeam.io).
 
+![screenshot](public/screenshot.png)
+
 ## Features
 
 - 🔧 **Server Configuration**: Easily set and save your FHIR server URL
