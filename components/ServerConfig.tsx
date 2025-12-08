@@ -9,9 +9,10 @@ interface ServerConfigProps {
 
 // Predefined FHIR servers for production
 const PRODUCTION_FHIR_SERVERS = [
-  { name: 'HAPI FHIR R4 (Public Test Server)', url: 'https://hapi.fhir.org/baseR4' },
-  { name: 'HAPI FHIR R5 (Public Test Server)', url: 'https://hapi.fhir.org/baseR5' },
-  { name: 'Firely Server (Public)', url: 'https://server.fire.ly' },
+    { name: 'HAPI FHIR R4 (Public Test Server)', url: 'https://hapi.fhir.org/baseR4' },
+    { name: 'HAPI FHIR R5 (Public Test Server)', url: 'https://hapi.fhir.org/baseR5' },
+    { name: 'Firely Server (Public)', url: 'https://server.fire.ly' },
+    { name: 'AU eRequesting test server', url: 'https://smile.sparked-fhir.com/ereq/fhir/DEFAULT' },
 ];
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -53,7 +54,7 @@ export default function ServerConfig({ onServerChange, onProxyChange }: ServerCo
   return (
     <div className="bg-white rounded-lg shadow-md p-6 mb-6">
       <h2 className="text-xl font-semibold mb-4 text-orange-700">FHIR Server Configuration</h2>
-      
+
       {isEditing ? (
         <div className="space-y-4">
           <div>
@@ -95,7 +96,7 @@ export default function ServerConfig({ onServerChange, onProxyChange }: ServerCo
               </>
             )}
           </div>
-          
+
           <div className="flex gap-2">
             <button
               onClick={handleSave}
