@@ -13,6 +13,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [requestInfo, setRequestInfo] = useState<{url: string; method: string; headers: Record<string, string>} | null>(null);
   const [useProxy, setUseProxy] = useState(true);
+  const [basicAuth, setBasicAuth] = useState<{ username: string; password: string } | null>(null);
 
   const handleServerChange = useCallback((url: string) => {
     setServerUrl(url);
@@ -20,6 +21,10 @@ export default function Home() {
 
   const handleProxyChange = useCallback((proxy: boolean) => {
     setUseProxy(proxy);
+  }, []);
+
+  const handleBasicAuthChange = useCallback((creds: { username: string; password: string } | null) => {
+    setBasicAuth(creds);
   }, []);
 
   const handleQuery = useCallback((queryResults: any, queryError?: string, reqInfo?: {url: string; method: string; headers: Record<string, string>}) => {
@@ -81,12 +86,13 @@ export default function Home() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 underline">
           <div>
-            <ServerConfig onServerChange={handleServerChange} onProxyChange={handleProxyChange} />
+            <ServerConfig onServerChange={handleServerChange} onProxyChange={handleProxyChange} onBasicAuthChange={handleBasicAuthChange} />
             <QueryInterface
               serverUrl={serverUrl}
               onQuery={handleQuery}
               onLoading={handleLoading}
               useProxy={useProxy}
+              basicAuth={basicAuth}
             />
             {requestInfo && (
               <div className="bg-white rounded-lg shadow-md p-6">

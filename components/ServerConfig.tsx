@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 interface ServerConfigProps {
   onServerChange: (url: string) => void;
   onProxyChange: (useProxy: boolean) => void;
+  onBasicAuthChange: (creds: { username: string; password: string } | null) => void;
 }
 
 // Predefined FHIR servers for production
@@ -17,15 +18,22 @@ const PRODUCTION_FHIR_SERVERS = [
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-export default function ServerConfig({ onServerChange, onProxyChange }: ServerConfigProps) {
+export default function ServerConfig({ onServerChange, onProxyChange, onBasicAuthChange }: ServerConfigProps) {
   const [serverUrl, setServerUrl] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [useProxy, setUseProxy] = useState(true);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [rememberCreds, setRememberCreds] = useState(false);
 
   useEffect(() => {
-    // Load saved server URL from localStorage
+    // Load saved server URL and proxy preference from localStorage
     const saved = localStorage.getItem('fhirServerUrl');
     const savedProxy = localStorage.getItem('fhirUseProxy');
+    const savedRemember = localStorage.getItem('fhirRememberBasicAuth') === 'true';
+    const savedUser = localStorage.getItem('fhirBasicAuthUsername') || '';
+    const savedPass = localStorage.getItem('fhirBasicAuthPassword') || '';
+
     if (saved) {
       setServerUrl(saved);
       onServerChange(saved);
@@ -37,17 +45,42 @@ export default function ServerConfig({ onServerChange, onProxyChange }: ServerCo
     } else {
       onProxyChange(true);
     }
-  }, [onServerChange, onProxyChange]);
+
+    setRememberCreds(savedRemember);
+    if (savedRemember) {
+      setUsername(savedUser);
+      setPassword(savedPass);
+      if (savedUser || savedPass) {
+        onBasicAuthChange({ username: savedUser, password: savedPass });
+      }
+    }
+  }, [onServerChange, onProxyChange, onBasicAuthChange]);
 
   const handleSave = () => {
     localStorage.setItem('fhirServerUrl', serverUrl);
     onServerChange(serverUrl);
+
+    // Persist or clear credentials
+    localStorage.setItem('fhirRememberBasicAuth', String(rememberCreds));
+    if (rememberCreds) {
+      localStorage.setItem('fhirBasicAuthUsername', username);
+      localStorage.setItem('fhirBasicAuthPassword', password);
+    } else {
+      localStorage.removeItem('fhirBasicAuthUsername');
+      localStorage.removeItem('fhirBasicAuthPassword');
+    }
+
+    onBasicAuthChange(username || password ? { username, password } : null);
     setIsEditing(false);
   };
 
   const handleCancel = () => {
     const saved = localStorage.getItem('fhirServerUrl') || '';
     setServerUrl(saved);
+    const savedRemember = localStorage.getItem('fhirRememberBasicAuth') === 'true';
+    setRememberCreds(savedRemember);
+    setUsername(savedRemember ? localStorage.getItem('fhirBasicAuthUsername') || '' : '');
+    setPassword(savedRemember ? localStorage.getItem('fhirBasicAuthPassword') || '' : '');
     setIsEditing(false);
   };
 
@@ -95,6 +128,40 @@ export default function ServerConfig({ onServerChange, onProxyChange }: ServerCo
                 </p>
               </>
             )}
+          </div>
+
+          <div className="space-y-2">
+            <h3 className="text-sm font-medium text-orange-700">Basic Authentication (optional)</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+              <input
+                id="basicUsername"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Username"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent text-orange-700"
+              />
+              <input
+                id="basicPassword"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent text-orange-700"
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="rememberCreds"
+                className="rounded"
+                checked={rememberCreds}
+                onChange={(e) => setRememberCreds(e.target.checked)}
+              />
+              <label htmlFor="rememberCreds" className="text-xs text-gray-600">
+                Remember credentials on this device (stored in localStorage)
+              </label>
+            </div>
           </div>
 
           <div className="flex gap-2">

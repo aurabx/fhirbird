@@ -44,6 +44,7 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const targetUrl = searchParams.get('url');
   const headersParam = searchParams.get('headers');
+  const forwardedAuth = request.headers.get('x-fhir-authorization');
 
   // Log the request
   console.log(`[FHIR Proxy] Request from ${ip} to ${targetUrl}`);
@@ -123,6 +124,11 @@ export async function GET(request: NextRequest) {
       } catch (e) {
         return NextResponse.json({ error: 'Invalid headers JSON' }, { status: 400 });
       }
+    }
+
+    // Forward Authorization from a dedicated header to avoid leaking via query string
+    if (forwardedAuth) {
+      headers.Authorization = forwardedAuth;
     }
 
     // Add timeout to prevent hanging requests

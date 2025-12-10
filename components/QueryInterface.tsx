@@ -7,6 +7,7 @@ interface QueryInterfaceProps {
   onQuery: (results: any, error?: string, reqInfo?: {url: string; method: string; headers: Record<string, string>}) => void;
   onLoading: (loading: boolean) => void;
   useProxy: boolean;
+  basicAuth: { username: string; password: string } | null;
 }
 
 const COMMON_RESOURCES = [
@@ -24,7 +25,7 @@ const COMMON_RESOURCES = [
   'CarePlan',
 ];
 
-export default function QueryInterface({ serverUrl, onQuery, onLoading, useProxy }: QueryInterfaceProps) {
+export default function QueryInterface({ serverUrl, onQuery, onLoading, useProxy, basicAuth }: QueryInterfaceProps) {
   const [resourceType, setResourceType] = useState('Patient');
   const [resourceOptions, setResourceOptions] = useState(COMMON_RESOURCES);
   const [searchParams, setSearchParams] = useState('');
@@ -57,14 +58,28 @@ export default function QueryInterface({ serverUrl, onQuery, onLoading, useProxy
         'Accept': 'application/fhir+json',
       };
 
+      // Append Basic Auth if provided
+      let authHeaderValue: string | null = null;
+      if (basicAuth && (basicAuth.username || basicAuth.password)) {
+        const creds = `${basicAuth.username || ''}:${basicAuth.password || ''}`;
+        // Browser-safe base64 for UTF-8
+        const encoded = typeof window === 'undefined'
+          ? Buffer.from(creds, 'utf-8').toString('base64')
+          : btoa(unescape(encodeURIComponent(creds)));
+        authHeaderValue = `Basic ${encoded}`;
+        headers['Authorization'] = authHeaderValue;
+      }
+
       let fetchUrl = url;
-      let fetchHeaders = headers;
+      let fetchHeaders: Record<string, string> = headers;
 
       if (useProxy) {
         const encodedUrl = encodeURIComponent(url);
-        const encodedHeaders = encodeURIComponent(JSON.stringify(headers));
+        // Do NOT send Authorization via query string
+        const { Authorization, ...safeHeaders } = headers;
+        const encodedHeaders = encodeURIComponent(JSON.stringify(safeHeaders));
         fetchUrl = `/api/fhir-proxy?url=${encodedUrl}&headers=${encodedHeaders}`;
-        fetchHeaders = {};
+        fetchHeaders = authHeaderValue ? { 'X-FHIR-Authorization': authHeaderValue } : {};
       }
 
       const response = await fetch(fetchUrl, {
@@ -157,18 +172,34 @@ export default function QueryInterface({ serverUrl, onQuery, onLoading, useProxy
         }
       }
 
-      console.log('Headers being sent:', headers);
-      const requestInfo = { url, method: 'GET', headers };
+      // Add/override with Basic Auth if provided
+      let authHeaderValue: string | null = null;
+      if (basicAuth && (basicAuth.username || basicAuth.password)) {
+        const creds = `${basicAuth.username || ''}:${basicAuth.password || ''}`;
+        const encoded = typeof window === 'undefined'
+          ? Buffer.from(creds, 'utf-8').toString('base64')
+          : btoa(unescape(encodeURIComponent(creds)));
+        authHeaderValue = `Basic ${encoded}`;
+        headers['Authorization'] = authHeaderValue;
+      }
+
+      // Prepare display-safe headers for Request Details
+      const displayHeaders: Record<string, string> = { ...headers };
+      if (displayHeaders['Authorization']) {
+        displayHeaders['Authorization'] = displayHeaders['Authorization'].replace(/^(Basic|Bearer)\s.+$/, '$1 ***');
+      }
+      const requestInfo = { url, method: 'GET', headers: displayHeaders };
 
       let fetchUrl = url;
-      let fetchHeaders = headers;
+      let fetchHeaders: Record<string, string> = headers;
 
       if (useProxy) {
-        // Use the proxy to avoid CORS
+        // Use the proxy to avoid CORS. Do NOT include Authorization in query string.
         const encodedUrl = encodeURIComponent(url);
-        const encodedHeaders = encodeURIComponent(JSON.stringify(headers));
+        const { Authorization, ...safeHeaders } = headers;
+        const encodedHeaders = encodeURIComponent(JSON.stringify(safeHeaders));
         fetchUrl = `/api/fhir-proxy?url=${encodedUrl}&headers=${encodedHeaders}`;
-        fetchHeaders = {}; // Proxy will handle headers
+        fetchHeaders = authHeaderValue ? { 'X-FHIR-Authorization': authHeaderValue } : {};
       }
 
       const response = await fetch(fetchUrl, {
